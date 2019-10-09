@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+
+import configparser
+import logging
+import time
+import schedule
+from pathlib import Path
+
+FORMAT = '%(asctime)-15s %(message)s'
+logging.basicConfig(format=FORMAT)
+
+logger = logging.getLogger()
+
+from pygoodwe import SingleInverter
+from pvoutput import PVOutput
+
+default_config = {
+    'default' : {
+        'logging_level' : 'INFO',
+        'sleep_timer' : 10,
+    },
+    'goodwe' : {
+
+    },
+    'pvoutput' : {
+        'donation_made' : False,
+        'schedule_time' : 10, # minutes, the default for Goodwe - PVOutput allows 5-15
+    }
+}
+
+
+configfiles = ['./goodwe2pvoutput.conf', '/etc/goodwe2pvoutput.conf', f"{str(Path.home())}/.goodwe2pvoutput.conf"]
+
+CONFIG = configparser.ConfigParser(defaults=default_config,)
+CONFIG.read(filenames=configfiles)
+
+logging_level = CONFIG.get('default', 'logging_level')
+if logging_level not in ['CRITICAL','ERROR','WARNING','INFO','DEBUG','NOTSET']:
+    exit(f"Invalid logging level: {logging_level}")
+logger.setLevel(eval(f'logging.{logging_level}'))
+
+
+def do_the_thing():
+    logger.debug("Starting do_the_thing()")
+
+    logger.debug("Instantiating PVOutput API Object")
+    pvo = PVOutput(apikey=CONFIG.get('pvoutput', 'apikey'), 
+                    systemid=CONFIG.getint('pvoutput', 'systemid'), 
+                    donation_made=CONFIG.get('pvoutput', 'donation_made'),
+                    )
+
+    logger.debug("Connecting to Goodwe API")
+    gw = SingleInverter(account=CONFIG.get('goodwe', 'account'),
+                        system_id=CONFIG.get('goodwe', 'systemid'), 
+                        password=CONFIG.get('goodwe', 'password')
+                        )
+
+    pvdata = gw.getDataPvoutput()
+    logger.debug("Grabbing the PVOutput-ready data: %s", pvdata)
+
+    response = pvo.addstatus(data=pvdata)
+    logger.debug("Called the PVOutput addstatus endpoint: %s", response.text)
+
+# simple scheduler, run do_the_thing() every x minutes
+logger.debug("Scheduling update every %s minutes", CONFIG.getint('pvoutput', 'schedule_time'))
+schedule.every(CONFIG.getint('pvoutput', 'schedule_time')).minutes.do(do_the_thing)
+
+logger.debug("Doing initial run...")
+do_the_thing()
+
+while True:
+    logger.debug("Running scheduler...")
+    schedule.run_pending()
+    logger.debug("Done, sleeping for %s seconds", CONFIG.getint('default', 'sleep_timer'))
+    time.sleep(CONFIG.getint('default', 'sleep_timer'))

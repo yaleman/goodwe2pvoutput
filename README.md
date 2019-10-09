@@ -1,2 +1,47 @@
-# goodwe2pvoutput
-Take the data from your Goodwe inverter and upload it to PVOutput.org
+Quick service for uploading data from your Goodwe inverter to PVOutput.org
+
+# Configuration
+
+File in one of these places:
+
+* ~/.goodwe2pvoutput.conf (Home dir)
+* ./goodwe2pvoutput.conf (Current dir)
+* /etc/goodwe2pvoutput.conf
+
+Template: see `goodwe2pvoutput.conf.example`
+
+## Goodwe config
+
+Determine the Station ID from the GOODWE site as follows. Open the [Sems Portal](https://www.semsportal.com). The Plant Status will reveal the Station ID in the URL. Example:
+
+    https://www.semsportal.com/powerstation/powerstatussnmin/11112222-aaaa-bbbb-cccc-ddddeeeeeffff
+
+Then the Station ID is `11112222-aaaa-bbbb-cccc-ddddeeeeeffff`.
+
+## PVOutput config
+
+Get your API key and system ID from [the account page on PVOutput](https://pvoutput.org/account.jsp)
+
+# Running it
+
+`goodwe2pvoutput` should do it for testing.
+
+If you want to make it a `systemd` service:
+
+* Download [goodwe2pvoutput.service](https://raw.githubusercontent.com/yaleman/goodwe2pvoutput/master/goodwe2pvoutput.service) to `/etc/systemd/system/` 
+* Make sure the config file is at `/etc/goodwe2pvoutput.conf` 
+* Run `sudo systemctl daemon-reload` to load the file
+* `sudo systemctl status goodwe2pvoutput` to check it looks sane
+* `sudo systemctl enable goodwe2pvoutput` to enable it on boot
+* `sudo systemctl start goodwe2pvoutput` to start it
+
+
+# Dependencies
+
+* [pygoodwe](https://pypi.org/project/pygoodwe/)
+* [pvoutput](https://pypi.org/project/pvoutput)
+* [schedule](https://pypi.org/project/schedule/)
+
+# Contributing
+
+You're probably better off contributing to other packages like the dependencies above, but if you feel the need - [lodge an issue or PR on Github](https://github.com/yaleman/goodwe2pvoutput/issues)

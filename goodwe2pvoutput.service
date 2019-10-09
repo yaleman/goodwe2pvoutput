@@ -1,0 +1,12 @@
+[Unit]
+Description=Read GoodWe inverter and upload data to PVOutput.org
+
+[Service]
+WorkingDirectory=/tmp/
+ExecStart=/usr/local/bin/goodwe2pvoutput
+Restart=always
+RestartSec=300
+Environment="TZ=Australia/Brisbane"
+
+[Install]
+WantedBy=multi-user.target

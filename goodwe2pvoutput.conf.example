@@ -1,0 +1,17 @@
+[default]
+# See https://docs.python.org/3.7/library/logging.html#levels for logging levels
+logging_level = ERROR
+# seconds between scheduler runs - make this much longer if you see performance issues or just want to reduce power
+sleep_timer = 10
+
+[goodwe]
+account = user@example.com
+system_id = aaabbbbb-cccc-dddd-eeee-ffffffgggggg
+password = darkHorseBatteryStaple123
+
+[pvoutput]
+apikey = 
+systemid = 
+donation_made = True
+# minutes, the default for Goodwe - PVOutput allows 5-15
+schedule_time = 10
