@@ -51,3 +51,4 @@ You're probably better off contributing to other packages like the dependencies 
 * 0.0.1 Initial Version
 * 0.0.2 2019-10-12 Updated to include SoC upload
 * 0.0.3 2019-10-12 Turns out the "defaults" aren't as default as I thought in ConfigParser. Fixed.
+* 0.0.4 2019-10-12 Way more config error checking
