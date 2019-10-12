@@ -15,3 +15,8 @@ systemid =
 donation_made = True
 # minutes, the default for Goodwe - PVOutput allows 5-15
 schedule_time = 10
+
+# if you have donated, and have a battery, set this to True and you can insert the State of Charge into a field
+soc_enable = True
+# if soc_enable is true, set this to the field you want to insert the SoC value into.
+soc_field = v7

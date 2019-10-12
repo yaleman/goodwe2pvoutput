@@ -13,6 +13,7 @@ logger = logging.getLogger()
 
 from pygoodwe import SingleInverter
 from pvoutput import PVOutput
+from pvoutput.parameters import ADDSTATUS_PARAMETERS
 
 default_config = {
     'default' : {
@@ -25,6 +26,8 @@ default_config = {
     'pvoutput' : {
         'donation_made' : False,
         'schedule_time' : 10, # minutes, the default for Goodwe - PVOutput allows 5-15
+        'soc_enable' : False,
+        'soc_field' : 'v7',
     }
 }
 
@@ -39,6 +42,30 @@ if logging_level not in ['CRITICAL','ERROR','WARNING','INFO','DEBUG','NOTSET']:
     exit(f"Invalid logging level: {logging_level}")
 logger.setLevel(eval(f'logging.{logging_level}'))
 
+if CONFIG.getboolean('pvoutput', 'soc_enable'):
+    if not CONFIG.getboolean('pvoutput', 'donation_made'):
+        logger.error('Cannot log State of Charge if you have not donated')
+        CONFIG.set('pvoutput', 'soc_enable', False)
+    if CONFIG.get('pvoutput', 'soc_field') not in ADDSTATUS_PARAMETERS.keys():
+        # setting an invalid field name
+        logger.error('Cannot log State of Charge to field "%s" - field does not exist', CONFIG.get('pvoutput', 'soc_field'))
+        CONFIG.set('pvoutput', 'soc_enable', False)
+
+def add_soc(gw, pvo, pvdata):
+    """ adds the state of charge field if you've donated and set it to """
+    if not CONFIG.getboolean('pvoutput', 'soc_enable'):
+        return pvdata
+    if not CONFIG.getboolean('pvoutput', 'donation_made'):
+        return pvdata
+    pvdata[CONFIG.get('pvoutput', 'soc_field')] = gw.get_battery_soc()
+    
+    # this'll throw errors if it's not right
+    try:
+        pvo.validate_data(pvdata, ADDSTATUS_PARAMETERS)
+    except Exception as e:
+        logger.error("PVOutput.validate_data(%s) failed with an error: %s", pvdata, e)
+        sys.exit()
+    return pvdata    
 
 def do_the_thing():
     logger.debug("Starting do_the_thing()")
@@ -54,8 +81,10 @@ def do_the_thing():
                         system_id=CONFIG.get('goodwe', 'systemid'), 
                         password=CONFIG.get('goodwe', 'password')
                         )
-
+    # update the data
     pvdata = gw.getDataPvoutput()
+    # add the state of charge data
+    pvdata = add_soc(gw, pvo, pvdata)
     logger.debug("Grabbing the PVOutput-ready data: %s", pvdata)
 
     response = pvo.addstatus(data=pvdata)
