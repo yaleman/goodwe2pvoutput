@@ -4,6 +4,7 @@ import configparser
 import logging
 import time
 import schedule
+import sys
 from pathlib import Path
 
 FORMAT = '%(asctime)-15s %(message)s'
@@ -18,23 +19,24 @@ from pvoutput.parameters import ADDSTATUS_PARAMETERS
 default_config = {
     'default' : {
         'logging_level' : 'INFO',
-        'sleep_timer' : 10,
+        'sleep_timer' : '10',
     },
     'goodwe' : {
 
     },
     'pvoutput' : {
-        'donation_made' : False,
-        'schedule_time' : 10, # minutes, the default for Goodwe - PVOutput allows 5-15
-        'soc_enable' : False,
-        'soc_field' : 'v7',
+        'donation_made' : 'False',
+        'schedule_time' : '10', # minutes, the default for Goodwe - PVOutput allows 5-15
+        'soc_enable' : 'False',
+        'soc_field' : 'None',
     }
 }
 
 
 configfiles = ['./goodwe2pvoutput.conf', '/etc/goodwe2pvoutput.conf', f"{str(Path.home())}/.goodwe2pvoutput.conf"]
 
-CONFIG = configparser.ConfigParser(defaults=default_config,)
+CONFIG = configparser.ConfigParser()
+CONFIG.read_dict(default_config)
 CONFIG.read(filenames=configfiles)
 
 logging_level = CONFIG.get('default', 'logging_level')
@@ -66,6 +68,24 @@ def add_soc(gw, pvo, pvdata):
         logger.error("PVOutput.validate_data(%s) failed with an error: %s", pvdata, e)
         sys.exit()
     return pvdata    
+
+# check if the config has the needful
+required_config = (
+    ('pvoutput', 'apikey'),
+    ('pvoutput', 'systemid'),
+    ('goodwe', 'account'),
+    ('goodwe', 'password'),
+    ('goodwe', 'systemid')
+)
+failout = False
+for section, key in required_config:
+    if not CONFIG.get(section, key, fallback=None):
+        logging.error("Need to specify %s %s in config", section, key)
+        failout = True
+if failout:
+    sys.exit()
+# end config check
+
 
 def do_the_thing():
     logger.debug("Starting do_the_thing()")

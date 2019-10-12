@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="goodwe2pvoutput",
-    version="0.0.1",
+    version="0.0.3",
     author="James Hodgkinson",
     author_email="yaleman@ricetek.net",
     description="PVOutput.org Goodwe uploader",
