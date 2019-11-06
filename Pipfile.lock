@@ -39,11 +39,11 @@
         },
         "pvoutput": {
             "hashes": [
-                "sha256:58075e39c2ec3a43f254a149f46dd3e81377cae6df8d4752c672ff077f84901d",
-                "sha256:def7cbd3c107764958f071662f0018bdf949a90573769797575bd5b64fc7cc52"
+                "sha256:5a30ae824eae34b125319a8621a4b54d8a072a0190c77c59163afb589d899a5f",
+                "sha256:72b1f24637b90facdddb6f1b3dacfca22008436cc4fbdb041575de8a1f6c9599"
             ],
             "index": "pypi",
-            "version": "==0.0.3"
+            "version": "==0.0.4"
         },
         "pygoodwe": {
             "hashes": [
