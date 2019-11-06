@@ -39,19 +39,19 @@
         },
         "pvoutput": {
             "hashes": [
-                "sha256:72409a1d7402e07bc97ab53349eb9ec6dbc64ffc7377cccb75f1d1c824ac388e",
-                "sha256:abf60c0f55065d8a81c20f206ef0cb09d88eca627550f814f2751f89865b0fa1"
+                "sha256:5a30ae824eae34b125319a8621a4b54d8a072a0190c77c59163afb589d899a5f",
+                "sha256:72b1f24637b90facdddb6f1b3dacfca22008436cc4fbdb041575de8a1f6c9599"
             ],
             "index": "pypi",
-            "version": "==0.0.2"
+            "version": "==0.0.4"
         },
         "pygoodwe": {
             "hashes": [
-                "sha256:53d2fbc7d14dbfb561a3aa8d9ef7219083f35b1459bc410ad88f749c1409b794",
-                "sha256:b5ba6ea2aa20ce93bd144f284bf26c2d17ac5a9c248e320a148f443fa33efd4e"
+                "sha256:886254ae5deafdbd6eb325332c689121de42e040cd6e1d69f30d2a602d612306",
+                "sha256:88dc48ac5848991a55aeb0bfe21b01f3fecb11a7a29869fa33733f47189af5be"
             ],
             "index": "pypi",
-            "version": "==0.0.8"
+            "version": "==0.0.11"
         },
         "requests": {
             "hashes": [
