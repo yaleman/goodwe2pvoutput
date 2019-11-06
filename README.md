@@ -1,5 +1,7 @@
 Quick service for uploading data from your Goodwe inverter to PVOutput.org
 
+![travis status](https://travis-ci.org/yaleman/goodwe2pvoutput.svg?branch=master)
+
 # Configuration
 
 File in one of these places:
