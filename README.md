@@ -1,6 +1,6 @@
 Quick service for uploading data from your Goodwe inverter to PVOutput.org
 
-![travis status](https://travis-ci.org/yaleman/goodwe2pvoutput.svg?branch=master)
+[![Build Status](https://droneio.yaleman.org/api/badges/yaleman/goodwe2pvoutput/status.svg)](https://droneio.yaleman.org/yaleman/goodwe2pvoutput)
 
 # Configuration
 
