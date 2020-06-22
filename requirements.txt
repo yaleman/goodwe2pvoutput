@@ -1,9 +1,9 @@
 -i https://pypi.org/simple/
-certifi==2019.11.28
+certifi==2020.6.20
 chardet==3.0.4
-idna==2.8
+idna==2.9
 pvoutput==0.0.4
-pygoodwe==0.0.12
-requests==2.22.0
+pygoodwe==0.0.13
+requests==2.24.0
 schedule==0.6.0
-urllib3==1.25.7
+urllib3==1.25.9
