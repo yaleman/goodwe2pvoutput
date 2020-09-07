@@ -39,11 +39,11 @@
         },
         "pvoutput": {
             "hashes": [
-                "sha256:5a30ae824eae34b125319a8621a4b54d8a072a0190c77c59163afb589d899a5f",
-                "sha256:72b1f24637b90facdddb6f1b3dacfca22008436cc4fbdb041575de8a1f6c9599"
+                "sha256:3d19a546c517d3b226d598b5185b56ee5ef24d968a5fca8504d70d95fa8c755b",
+                "sha256:f6b5686eef78870475567c75b47a422b053bac00f8bbbc87a64e58a90c569e84"
             ],
             "index": "pypi",
-            "version": "==0.0.4"
+            "version": "==0.0.5"
         },
         "pygoodwe": {
             "hashes": [
@@ -70,10 +70,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:3018294ebefce6572a474f0604c2021e33b3fd8006ecd11d62107a5d2a963527",
-                "sha256:88206b0eb87e6d677d424843ac5209e3fb9d0190d0ee169599165ec25e9d9115"
+                "sha256:91056c15fa70756691db97756772bb1eb9678fa585d9184f24534b100dc60f4a",
+                "sha256:e7983572181f5e1522d9c98453462384ee92a0be7fac5f1413a1e35c56cc0461"
             ],
-            "version": "==1.25.9"
+            "version": "==1.25.10"
         }
     },
     "develop": {}
