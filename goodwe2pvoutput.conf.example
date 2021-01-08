@@ -6,7 +6,7 @@ sleep_timer = 10
 
 [goodwe]
 account = user@example.com
-system_id = aaabbbbb-cccc-dddd-eeee-ffffffgggggg
+systemid = aaabbbbb-cccc-dddd-eeee-ffffffgggggg
 password = darkHorseBatteryStaple123
 
 [pvoutput]
