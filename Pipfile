@@ -9,6 +9,3 @@ verify_ssl = true
 pvoutput = "*"
 pygoodwe = "*"
 schedule = "*"
-
-[requires]
-python_version = "3.7"

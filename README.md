@@ -1,4 +1,6 @@
-Quick service for uploading data from your Goodwe inverter to PVOutput.org
+Quick service for uploading data from your Goodwe inverter to PVOutput.org. 
+
+It grabs generation (W), load (W), inverter temperature and voltage (V). If you're a subscriber to PVOutput you can store state of charge of your battery too. The data is pulled via my pygoodwe library in the [getDataPvOutput function](https://github.com/yaleman/pygoodwe/blob/master/pygoodwe/__init__.py#L236).
 
 [![Build Status](https://droneio.yaleman.org/api/badges/yaleman/goodwe2pvoutput/status.svg)](https://droneio.yaleman.org/yaleman/goodwe2pvoutput)
 
