@@ -45,11 +45,11 @@
         },
         "pygoodwe": {
             "hashes": [
-                "sha256:924910da3d711b7926f7d992ac059a3f3e012e390a84d88b9216adbd6a3a754d",
-                "sha256:c91d5b3bbaaf40da8733bcb66b570745f73e1e36637cbdcb02c4bcf95c836eb7"
+                "sha256:7481f4f30ed699010eaf4dd33406b19f4d7126a0acd72e5223c5c425e526ce81",
+                "sha256:c5cca3fae83cecb5bbff217e7c26a8c1aa41cf9ac00019281a6381fc370ed04b"
             ],
             "index": "pypi",
-            "version": "==0.0.15"
+            "version": "==0.0.16"
         },
         "requests": {
             "hashes": [
