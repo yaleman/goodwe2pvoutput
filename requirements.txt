@@ -5,5 +5,5 @@ idna==2.10
 pvoutput==0.0.5
 pygoodwe==0.0.16
 requests==2.25.1
-schedule==1.0.0
+schedule==1.1.0
 urllib3==1.26.4
