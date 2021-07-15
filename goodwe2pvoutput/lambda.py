@@ -17,9 +17,10 @@ def lambda_handler(event: dict, context: dict) -> bool:
     logger = logging.getLogger()
 
     if os.getenv('LOG_LEVEL') in ['CRITICAL','ERROR','WARNING','INFO','DEBUG','NOTSET']:
+        print(f"Setting log level to {os.getenv('LOG_LEVEL')}")
         logger.setLevel(getattr(logging, os.getenv('LOG_LEVEL')))
     else:
-        logger.setLevel(logging.INFO)
+        logger.setLevel(logging.WARNING)
 
     ##################
     # Required environment variables
