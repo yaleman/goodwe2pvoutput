@@ -13,6 +13,14 @@ from pvoutput.parameters import ADDSTATUS_PARAMETERS
 
 def lambda_handler(event: dict, context: dict) -> bool:
     """ does the needful """
+
+    logger = logging.getLogger()
+
+    if os.getenv('LOG_LEVEL') in ['CRITICAL','ERROR','WARNING','INFO','DEBUG','NOTSET']:
+        logger.setLevel(getattr(logging, os.getenv('LOG_LEVEL')))
+    else:
+        logger.setLevel(logging.INFO)
+
     ##################
     # Required environment variables
     ##################
