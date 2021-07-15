@@ -57,3 +57,4 @@ You're probably better off contributing to other packages like the dependencies 
 * 0.0.3 2019-10-12 Turns out the "defaults" aren't as default as I thought in ConfigParser. Fixed.
 * 0.0.4 2019-10-12 Way more config error checking
 * 0.0.5 2021-01-08 Fixed the example config "systemid" field was mistyped.
+* 0.0.6 2021-07-15 Didn't change the module much, added lambda function.
