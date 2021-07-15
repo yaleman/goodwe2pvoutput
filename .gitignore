@@ -106,3 +106,8 @@ venv.bak/
 goodwe2pvoutput.conf
 sonarqube-test.sh
 .scannerwork/
+terraform.tf
+terraform.tfvars
+.terraform
+*.zip
+layer_requirements/
