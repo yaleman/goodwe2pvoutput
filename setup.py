@@ -1,3 +1,4 @@
+""" setup module """
 import setuptools
 
 with open("README.md", "r") as fh:
@@ -24,3 +25,4 @@ setuptools.setup(
     python_requires='>=3.8',
     scripts=['goodwe2pvoutput/bin/goodwe2pvoutput']
 )
+
