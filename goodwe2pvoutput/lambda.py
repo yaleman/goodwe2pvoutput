@@ -10,10 +10,10 @@ from pygoodwe import SingleInverter
 from pvoutput import PVOutput
 from pvoutput.parameters import ADDSTATUS_PARAMETERS
 
-
+# pylint: disable=unused-argument
 def lambda_handler(
     event: dict, context: dict
-) -> bool:  # pylint: disable=unused-argument
+) -> bool:
     """does the needful"""
 
     logger = logging.getLogger()
