@@ -6,73 +6,77 @@ lambda function for doing the goodwe2pvoutput thing
 import os
 import logging
 
-
 from pygoodwe import SingleInverter
 from pvoutput import PVOutput
 from pvoutput.parameters import ADDSTATUS_PARAMETERS
 
-def lambda_handler(event: dict, context: dict) -> bool:
+
+def lambda_handler(event: dict, context: dict) -> bool: # pylint: disable=unused-argument
     """ does the needful """
 
     logger = logging.getLogger()
 
     if os.getenv('LOG_LEVEL') in ['CRITICAL','ERROR','WARNING','INFO','DEBUG','NOTSET']:
         print(f"Setting log level to {os.getenv('LOG_LEVEL')}")
-        logger.setLevel(getattr(logging, os.getenv('LOG_LEVEL')))
+        logger.setLevel(getattr(logging, os.environ['LOG_LEVEL']))
     else:
         logger.setLevel(logging.WARNING)
 
     ##################
     # Required environment variables
     ##################
-    SOC_FIELD = os.getenv('SOC_FIELD')
-    SOC_ENABLE = os.getenv('SOC_ENABLE')
-    PVOUTPUT_DONATION_MODE = os.getenv('PVOUTPUT_DONATION_MODE')
-    PVOUTPUT_APIKEY = os.getenv("PVOUTPUT_APIKEY")
-    PVOUTPUT_SYSTEMID =int(os.getenv("PVOUTPUT_SYSTEMID"))
 
-    GOODWE_USERNAME = os.getenv('GOODWE_USERNAME')
-    GOODWE_PASSWORD = os.getenv('GOODWE_PASSWORD')
-    GOODWE_SYSTEMID = os.getenv('GOODWE_SYSTEMID')
 
+    soc_field = os.getenv('SOC_FIELD')
+    soc_enable = bool(os.getenv('SOC_ENABLE'))
+    pvoutput_donation_mode = os.getenv('PVOUTPUT_DONATION_MODE')
+    pvoutput_apikey = os.getenv("PVOUTPUT_APIKEY")
+    pvoutput_systemid_orig =os.getenv("PVOUTPUT_SYSTEMID")
+    if pvoutput_systemid_orig is not None:
+        pvoutput_systemid = int(pvoutput_systemid_orig)
+
+    goodwe_username = os.getenv('GOODWE_USERNAME')
+    goodwe_password = os.getenv('GOODWE_PASSWORD')
+    goodwe_systemid = os.getenv('GOODWE_SYSTEMID')
     if None in [
-        SOC_FIELD,
-        SOC_ENABLE,
-        PVOUTPUT_APIKEY,
-        PVOUTPUT_DONATION_MODE,
-        PVOUTPUT_SYSTEMID,
+        soc_field,
+        soc_enable,
+        pvoutput_apikey,
+        pvoutput_donation_mode,
+        pvoutput_systemid_orig,
 
-        GOODWE_PASSWORD,
-        GOODWE_SYSTEMID,
-        GOODWE_USERNAME,
+        goodwe_password,
+        goodwe_systemid,
+        goodwe_username,
     ] :
-        print("Missing environment variable, bailing")
+        logger.error("Missing environment variable, bailing")
+
         return False
 
 
-    if SOC_FIELD not in ADDSTATUS_PARAMETERS.keys():
+    if soc_field not in ADDSTATUS_PARAMETERS:
         # setting an invalid field name
-        print(f'Cannot log State of Charge to field "{SOC_FIELD}" - field does not exist')
-        SOC_ENABLE = False
+        print(f'Cannot log State of Charge to field "{soc_field}" - field does not exist')
+        soc_enable = False
 
     print("Instantiating PVOutput API Object")
-    pvo = PVOutput(apikey=PVOUTPUT_APIKEY,
-                    systemid=PVOUTPUT_SYSTEMID,
-                    donation_made=PVOUTPUT_DONATION_MODE,
+    pvo = PVOutput(apikey=pvoutput_apikey,
+                    systemid=pvoutput_systemid,
+                    donation_made=pvoutput_donation_mode,
                     )
 
     print("Connecting to Goodwe API")
-    goodwe_inverter = SingleInverter(account=GOODWE_USERNAME,
-                        system_id=GOODWE_SYSTEMID,
-                        password=GOODWE_PASSWORD,
+    goodwe_inverter = SingleInverter(account=goodwe_username,
+                        system_id=goodwe_systemid,
+                        password=goodwe_password,
                         )
     # update the data
     pvdata = goodwe_inverter.getDataPvoutput()
 
     # add the state of charge data
-    if SOC_ENABLE and PVOUTPUT_DONATION_MODE:
-        pvdata[SOC_FIELD] = goodwe_inverter.get_battery_soc()
-    elif SOC_ENABLE and not PVOUTPUT_DONATION_MODE:
+    if soc_enable and pvoutput_donation_mode:
+        pvdata[soc_field] = goodwe_inverter.get_battery_soc()
+    elif soc_enable and not pvoutput_donation_mode:
         print("ENABLE_SOC flagged but not in donation mode, skipping.")
 
     # this'll throw errors if it's not right
