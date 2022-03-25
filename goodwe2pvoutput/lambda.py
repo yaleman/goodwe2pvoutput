@@ -3,16 +3,18 @@
 lambda function for doing the goodwe2pvoutput thing
 
 """
-import os
 import logging
+import os
+from typing import Any, Dict
 
-from pygoodwe import SingleInverter
-from pvoutput import PVOutput
-from pvoutput.parameters import ADDSTATUS_PARAMETERS
+from pygoodwe import SingleInverter #type: ignore
+from pvoutput import PVOutput #type: ignore
+from pvoutput.parameters import ADDSTATUS_PARAMETERS #type: ignore
 
 # pylint: disable=unused-argument
 def lambda_handler(
-    event: dict, context: dict
+    event: Dict[str,Any],
+    context: Dict[str, Any],
 ) -> bool:
     """does the needful"""
 
