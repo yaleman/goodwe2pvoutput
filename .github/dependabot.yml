@@ -1,16 +1,16 @@
 version: 2
 updates:
 - package-ecosystem: pip
-  directory: "/"
+  directory: /
   schedule:
-    interval: daily
-    time: "06:00"
-    timezone: Australia/Brisbane
-  open-pull-requests-limit: 99
+    interval: weekly
+    day: monday
+    time: "00:00"
+    timezone: Etc/UTC
 - package-ecosystem: terraform
-  directory: "/"
+  directory: /
   schedule:
-    interval: daily
-    time: "06:10"
-    timezone: Australia/Brisbane
-  open-pull-requests-limit: 99
+    interval: weekly
+    day: monday
+    time: "00:00"
+    timezone: Etc/UTC
