@@ -4,6 +4,6 @@ charset-normalizer==2.0.12
 idna==2.10
 pvoutput>=0.0.5
 pygoodwe==0.0.16
-requests==2.26.0
+requests==2.27.1
 schedule==1.1.0
 urllib3==1.26.9
