@@ -1,7 +1,7 @@
 certifi==2020.12.5
 chardet==4.0.0
 charset-normalizer==2.0.12
-idna==2.10
+idna==3.3
 pvoutput>=0.0.5
 pygoodwe==0.0.16
 requests==2.27.1
