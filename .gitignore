@@ -111,3 +111,4 @@ terraform.tfvars
 .terraform
 *.zip
 layer_requirements/
+requirements.txt
