@@ -112,3 +112,4 @@ terraform.tfvars
 *.zip
 layer_requirements/
 requirements.txt
+poetry.lock
