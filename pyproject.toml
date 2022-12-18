@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "goodwe2pvoutput"
-version = "0.0.1"
+version = "0.0.2"
 description = "Goodwe to PVOutput"
 authors = ["yaleman <james@terminaloutcomes.com>"]
 
