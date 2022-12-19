@@ -1,5 +1,13 @@
 #!/bin/bash
 #update_layer_files.sh
 
+if [ -f "/opt/homebrew/opt/asdf/libexec/asdf.sh" ]; then
+	. /opt/homebrew/opt/asdf/libexec/asdf.sh
+fi
+if [ -f "$HOME/.asdf/asdf.sh" ]; then
+ . $HOME/.asdf/asdf.sh
+fi
 mkdir -p layer_requirements/python
-/opt/homebrew/opt/python@3.8/bin/python3 -m pip install --target ./layer_requirements/python pvoutput pygoodwe
+asdf shell python 3.9.16
+python3 --version
+python3 -m pip install --upgrade --target ./layer_requirements/python pvoutput pygoodwe
