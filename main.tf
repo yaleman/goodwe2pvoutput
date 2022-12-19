@@ -41,7 +41,7 @@ data http requests_layers {
 
 
 locals {
-  lambda_layer_requests_arn = [for entry in jsondecode(data.http.requests_layers.body) :  entry.arn if entry["deployStatus"] != "deprecated" ][0]
+  lambda_layer_requests_arn = [for entry in jsondecode(data.http.requests_layers.response_body) :  entry.arn if entry["deployStatus"] != "deprecated" ][0]
 }
 ########## requirements LAYER START
 data archive_file layer_requirements {
