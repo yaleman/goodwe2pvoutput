@@ -11,7 +11,7 @@ from pygoodwe import SingleInverter #type: ignore
 from pvoutput import PVOutput #type: ignore
 from pvoutput.parameters import ADDSTATUS_PARAMETERS #type: ignore
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,too-many-return-statements,too-many-branches
 def lambda_handler(
     event: Dict[str,Any],
     context: Dict[str, Any],
@@ -38,28 +38,39 @@ def lambda_handler(
     ##################
 
     soc_field = os.getenv("SOC_FIELD")
+    if soc_field is None:
+        logger.error("Missing SOC_FIELD environment variable, bailing")
+        return False
     soc_enable = bool(os.getenv("SOC_ENABLE"))
     pvoutput_donation_mode = os.getenv("PVOUTPUT_DONATION_MODE")
     pvoutput_apikey = os.getenv("PVOUTPUT_APIKEY")
     pvoutput_systemid_orig = os.getenv("PVOUTPUT_SYSTEMID")
     if pvoutput_systemid_orig is not None:
         pvoutput_systemid = int(pvoutput_systemid_orig)
+    else:
+        logger.error("Missing PVOUTPUT_SYSTEMID environment variable, bailing")
+        return False
 
     goodwe_username = os.getenv("GOODWE_USERNAME")
+    if goodwe_username is None:
+        logger.error("Missing GOODWE_USERNAME environment variable, bailing")
+        return False
+
     goodwe_password = os.getenv("GOODWE_PASSWORD")
+    if goodwe_password is None:
+        logger.error("Missing GOODWE_PASSWORD environment variable, bailing")
+        return False
     goodwe_systemid = os.getenv("GOODWE_SYSTEMID")
+    if goodwe_systemid is None:
+        logger.error("Missing GOODWE_SYSTEMID environment variable, bailing")
+        return False
+
     if None in [
-        soc_field,
         soc_enable,
         pvoutput_apikey,
         pvoutput_donation_mode,
-        pvoutput_systemid_orig,
-        goodwe_password,
-        goodwe_systemid,
-        goodwe_username,
     ]:
         logger.error("Missing environment variable, bailing")
-
         return False
 
     if soc_field not in ADDSTATUS_PARAMETERS:
@@ -84,6 +95,10 @@ def lambda_handler(
     )
     # update the data
     pvdata = goodwe_inverter.getDataPvoutput()
+
+    if pvdata is None:
+        logger.error("Couldn't get data from the system, bailing!")
+        return False
 
     # add the state of charge data
     if soc_enable and pvoutput_donation_mode:
