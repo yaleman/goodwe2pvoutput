@@ -11,7 +11,7 @@ pygoodwe = "^0.1.5"
 pvoutput = "^0.0.8"
 
 [tool.poetry.dev-dependencies]
-pylint = "^2.16.1"
+pylint = "^2.16.2"
 pytest = "^7.2.1"
 black = "^23.1.0"
 mypy = "^1.0"
