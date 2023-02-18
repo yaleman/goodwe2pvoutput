@@ -8,10 +8,10 @@ import os
 from typing import Any, Dict
 
 from pygoodwe import SingleInverter
-from pvoutput import PVOutput #type: ignore
-from pvoutput.parameters import ADDSTATUS_PARAMETERS #type: ignore
+from pvoutput import PVOutput
+from pvoutput.parameters import ADDSTATUS_PARAMETERS
 
-# pylint: disable=unused-argument,too-many-return-statements,too-many-branches
+# pylint: disable=unused-argument,too-many-return-statements,too-many-branches,too-many-statements
 def lambda_handler(
     event: Dict[str,Any],
     context: Dict[str, Any],
@@ -42,8 +42,14 @@ def lambda_handler(
         logger.error("Missing SOC_FIELD environment variable, bailing")
         return False
     soc_enable = bool(os.getenv("SOC_ENABLE"))
-    pvoutput_donation_mode = os.getenv("PVOUTPUT_DONATION_MODE")
+    pvoutput_donation_mode = bool(os.getenv("PVOUTPUT_DONATION_MODE"))
+    if pvoutput_donation_mode is None:
+        pvoutput_donation_mode = False
     pvoutput_apikey = os.getenv("PVOUTPUT_APIKEY")
+    if pvoutput_apikey is None:
+        logger.error("Missing PVOUTPUT_APIKEY environment variable, bailing")
+        return False
+
     pvoutput_systemid_orig = os.getenv("PVOUTPUT_SYSTEMID")
     if pvoutput_systemid_orig is not None:
         pvoutput_systemid = int(pvoutput_systemid_orig)
