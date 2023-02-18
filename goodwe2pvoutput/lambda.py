@@ -7,7 +7,7 @@ import logging
 import os
 from typing import Any, Dict
 
-from pygoodwe import SingleInverter #type: ignore
+from pygoodwe import SingleInverter
 from pvoutput import PVOutput #type: ignore
 from pvoutput.parameters import ADDSTATUS_PARAMETERS #type: ignore
 
