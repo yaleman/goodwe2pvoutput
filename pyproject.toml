@@ -8,7 +8,7 @@ authors = ["yaleman <james@terminaloutcomes.com>"]
 python = "^3.9"
 schedule = "^1.1.0"
 pygoodwe = "^0.1.5"
-pvoutput = "^0.0.8"
+pvoutput = "^0.0.11"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.16.2"
