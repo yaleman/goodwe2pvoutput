@@ -6,7 +6,7 @@ authors = ["yaleman <james@terminaloutcomes.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-schedule = "^1.2.0"
+schedule = "^1.2.1"
 pygoodwe = "^0.1.6"
 pvoutput = "^0.0.11"
 
