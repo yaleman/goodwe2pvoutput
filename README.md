@@ -1,4 +1,4 @@
-Quick service for uploading data from your Goodwe inverter to PVOutput.org. 
+Quick service for uploading data from your Goodwe inverter to PVOutput.org.
 
 It grabs generation (W), load (W), inverter temperature and voltage (V). If you're a subscriber to PVOutput you can store state of charge of your battery too. The data is pulled via my pygoodwe library in the [getDataPvOutput function](https://github.com/yaleman/pygoodwe/blob/master/pygoodwe/__init__.py#L236).
 
@@ -8,11 +8,11 @@ It grabs generation (W), load (W), inverter temperature and voltage (V). If you'
 
 File in one of these places:
 
-* ~/.goodwe2pvoutput.conf (Home dir)
-* ./goodwe2pvoutput.conf (Current dir)
-* /etc/goodwe2pvoutput.conf
+* ~/.goodwe2pvoutput.json (Home dir)
+* ./goodwe2pvoutput.json (Current dir)
+* /etc/goodwe2pvoutput.json
 
-Template: see `goodwe2pvoutput.conf.example`
+Template: see `goodwe2pvoutput.json.example`
 
 ## Goodwe config
 
@@ -32,13 +32,12 @@ Get your API key and system ID from [the account page on PVOutput](https://pvout
 
 If you want to make it a `systemd` service:
 
-* Download [goodwe2pvoutput.service](https://raw.githubusercontent.com/yaleman/goodwe2pvoutput/master/goodwe2pvoutput.service) to `/etc/systemd/system/` 
-* Make sure the config file is at `/etc/goodwe2pvoutput.conf` 
+* Download [goodwe2pvoutput.service](https://raw.githubusercontent.com/yaleman/goodwe2pvoutput/master/goodwe2pvoutput.service) to `/etc/systemd/system/`
+* Make sure the config file is at `/etc/goodwe2pvoutput.json`
 * Run `sudo systemctl daemon-reload` to load the file
 * `sudo systemctl status goodwe2pvoutput` to check it looks sane
 * `sudo systemctl enable goodwe2pvoutput` to enable it on boot
 * `sudo systemctl start goodwe2pvoutput` to start it
-
 
 # Dependencies
 

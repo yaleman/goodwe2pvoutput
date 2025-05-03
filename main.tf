@@ -1,8 +1,10 @@
 module dependabot_lambda {
-  source = "git::https://github.com/yaleman/terraform_lambda?ref=1.0.4"
+  source = "git::https://github.com/yaleman/terraform_lambda?ref=1.0.8"
   function_name = var.project_name
   lambda_handler = "${var.project_name}/lambda.lambda_handler"
-  lambda_runtime = "python3.9"
+  lambda_runtime = "python3.12"
+
+  lambda_run_on_schedule = true
 
   lambda_script_filename = "${var.project_name}/lambda.py"
   lambda_schedule_expression = var.schedule_expression
@@ -54,7 +56,7 @@ data archive_file layer_requirements {
 resource aws_lambda_layer_version layer_requirements {
   filename   = data.archive_file.layer_requirements.output_path
   layer_name = "goodwe2pvoutput-requirements"
-  compatible_runtimes = ["python3.9"]
+  compatible_runtimes = ["python3.12"]
   source_code_hash = data.archive_file.layer_requirements.output_base64sha256
   provisioner "local-exec" {
     command = "./update_layer_files.sh"
@@ -63,4 +65,4 @@ resource aws_lambda_layer_version layer_requirements {
     data.archive_file.layer_requirements
   ]
 }
-########## GHAPI LAYER END 
+########## GHAPI LAYER END

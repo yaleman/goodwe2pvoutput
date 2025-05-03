@@ -14,6 +14,7 @@ variable aws_profile {
 
 variable lambda_timeout {
     type = number
+    default = 900
 }
 
 variable schedule_expression {
