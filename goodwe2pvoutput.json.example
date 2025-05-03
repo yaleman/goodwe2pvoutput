@@ -1,0 +1,15 @@
+{
+"logging_level" : "DEBUG",
+"goodwe_account" :"yaleman@example.com",
+"goodwe_systemid" :"asdflskfjsljhfsdlakfjsf",
+"goodwe_password" :"hunter2",
+
+"pvoutput_apikey" : "aaaaaaaaaa",
+"pvoutput_systemid" : 12345,
+"pvoutput_donation_made" : true,
+"schedule_minutes" : 10,
+
+"pvoutput_soc_enable" : true,
+"pvoutput_soc_field" : "v7"
+
+}

@@ -1,15 +1,32 @@
 #!/bin/bash
 #update_layer_files.sh
 
-if [ -f "/opt/homebrew/opt/asdf/libexec/asdf.sh" ]; then
-	#shellcheck disable=1091
-	. /opt/homebrew/opt/asdf/libexec/asdf.sh
+if [ -d "layer_requirements" ]; then
+	echo "Removing existing layer_requirements directory..."
+	rm -rf layer_requirements
 fi
-if [ -f "$HOME/.asdf/asdf.sh" ]; then
-	#shellcheck disable=1091
-	. "$HOME/.asdf/asdf.sh"
-fi
-mkdir -p layer_requirements/python
-asdf shell python 3.9.16
-python3 --version
-python3 -m pip install --upgrade --target ./layer_requirements/python pvoutput pygoodwe
+
+TARGET_DIR="layer_requirements"
+
+mkdir -p "${TARGET_DIR}"
+
+PYTHON_VERSION="3.12"
+
+uv export --frozen --no-dev --no-editable -o "$TMPDIR/requirements.txt"
+uv pip install \
+   --no-installer-metadata \
+   --no-compile-bytecode \
+   --python-platform x86_64-manylinux2014 \
+   --python "${PYTHON_VERSION}" \
+   --target "${TARGET_DIR}/python" \
+   -r "$TMPDIR/requirements.txt"
+
+uv pip install \
+   --no-installer-metadata \
+   --no-compile-bytecode \
+   --python-platform aarch64-manylinux2014 \
+   --python "${PYTHON_VERSION}" \
+   --target "${TARGET_DIR}/python" \
+   -r "$TMPDIR/requirements.txt"
+
+rm -rf "${TARGET_DIR:?}/bin"

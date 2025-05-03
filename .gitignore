@@ -103,7 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 .vscode/*
-goodwe2pvoutput.conf
+goodwe2pvoutput.json
 sonarqube-test.sh
 .scannerwork/
 terraform.tf
@@ -112,4 +112,11 @@ terraform.tfvars
 *.zip
 layer_requirements/
 requirements.txt
-poetry.lock
+
+.vscode/
+.DS_Store
+config.py
+.envrc
+*.asc
+*.pyc
+**/__pycache__/*

@@ -1,21 +1,29 @@
-[tool.poetry]
+
+[project]
+authors = [{ name = "yaleman", email = "james@terminaloutcomes.com" }]
+requires-python = "<4.0,>=3.12"
+dependencies = [
+    "schedule>=1.2.2",
+    "pygoodwe>=0.1.9",
+    "pvoutput>=0.0.11",
+    "pydantic>=2.11.4",
+    "pydantic-settings>=2.9.1",
+]
 name = "goodwe2pvoutput"
-version = "0.0.2"
+version = "0.2.0"
 description = "Goodwe to PVOutput"
-authors = ["yaleman <james@terminaloutcomes.com>"]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-schedule = "^1.2.2"
-pygoodwe = "^0.1.9"
-pvoutput = "^0.0.11"
-
-[tool.poetry.dev-dependencies]
-pylint = "^3.3.6"
-pytest = "^8.3.5"
-black = "^25.1.0"
-mypy = "^1.15"
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5,<9.0.0",
+    "mypy>=1.10.0,<2.0",
+    "pyright>=1.1.400",
+    "ruff>=0.11.8",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pyright]
+exclude = ["layer_requirements/**", ".venv/**", ".terraform/**"]

@@ -1,9 +1,9 @@
+#!/bin/bash
+
+set -e
+
 echo "Building..."
-
-rm dist/*
-pipenv run python setup.py sdist bdist_wheel
-
+uv build
 
 echo "Uploading"
-
-python -m twine upload dist/*
+uv publish --username '__token__'
