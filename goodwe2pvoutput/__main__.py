@@ -129,14 +129,19 @@ def do_the_thing(config: Config) -> None:
     logger.debug("Called the PVOutput addstatus endpoint: %s", response.text)
 
 
-# simple scheduler, run do_the_thing() every x minutes
-logger.debug("Scheduling update every %s minutes", config.schedule_minutes)
-schedule.every(config.schedule_minutes).minutes.do(do_the_thing)
+def main() -> None:
+    # simple scheduler, run do_the_thing() every x minutes
+    logger.debug("Scheduling update every %s minutes", config.schedule_minutes)
+    schedule.every(config.schedule_minutes).minutes.do(do_the_thing)
 
-logger.debug("Doing initial run...")
-do_the_thing(config)
+    logger.debug("Doing initial run...")
+    do_the_thing(config)
 
-logger.debug("Running scheduler...")
-while True:
-    time.sleep(5)
-    schedule.run_pending()
+    logger.debug("Running scheduler...")
+    while True:
+        time.sleep(5)
+        schedule.run_pending()
+
+
+if __name__ == "__main__":
+    main()
