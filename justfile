@@ -6,7 +6,11 @@ build_lambda_container:
         -t ghcr.io/yaleman/goodwe2pvoutput:lambda \
         .
 
+check: lint test
+
+test:
+    uv run pytest
+
 lint:
     uv run ruff check goodwe2pvoutput tests
     uv run mypy --strict goodwe2pvoutput tests
-    uv run pyright goodwe2pvoutput tests
