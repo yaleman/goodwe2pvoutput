@@ -3,6 +3,7 @@
 lambda function for doing the goodwe2pvoutput thing
 
 """
+
 import logging
 import os
 from typing import Any, Dict
@@ -11,9 +12,10 @@ from pygoodwe import SingleInverter
 from pvoutput import PVOutput
 from pvoutput.parameters import ADDSTATUS_PARAMETERS
 
+
 # pylint: disable=unused-argument,too-many-return-statements,too-many-branches,too-many-statements
 def lambda_handler(
-    event: Dict[str,Any],
+    event: Dict[str, Any],
     context: Dict[str, Any],
 ) -> bool:
     """does the needful"""
@@ -100,6 +102,7 @@ def lambda_handler(
         password=goodwe_password,
     )
     # update the data
+    goodwe_inverter.get_current_readings(retries=0)
     pvdata = goodwe_inverter.getDataPvoutput()
 
     if pvdata is None:

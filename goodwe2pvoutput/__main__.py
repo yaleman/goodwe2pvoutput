@@ -120,6 +120,8 @@ def do_the_thing(config: Config) -> None:
         password=config.goodwe_password,
     )
     # update the data
+    gw.get_current_readings(maxretries=0)
+
     pvdata = gw.getDataPvoutput()
     # add the state of charge data
     pvdata = add_soc(config, gw, pvo, pvdata)
