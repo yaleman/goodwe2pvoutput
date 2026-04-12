@@ -102,7 +102,7 @@ def lambda_handler(
         password=goodwe_password,
     )
     # update the data
-    goodwe_inverter.get_current_readings(retries=0)
+    goodwe_inverter.get_current_readings(maxretries=0)
     pvdata = goodwe_inverter.getDataPvoutput()
 
     if pvdata is None:
