@@ -1,5 +1,5 @@
 default:
-    lint
+    just --list
 build_lambda_container:
     docker buildx build \
         --load \
