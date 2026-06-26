@@ -17,7 +17,7 @@ description = "Goodwe to PVOutput"
 dev = [
     "pytest>=9.1.1",
     "mypy>=2.1.0",
-    "pyright>=1.1.410",
+    "pyright>=1.1.411",
     "ruff>=0.15.18",
     "ty>=0.0.54",
 ]
