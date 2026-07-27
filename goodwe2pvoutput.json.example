@@ -1,6 +1,6 @@
 {
 "logging_level" : "DEBUG",
-"goodwe_account" :"yaleman@example.com",
+"goodwe_username" :"yaleman@example.com",
 "goodwe_systemid" :"asdflskfjsljhfsdlakfjsf",
 "goodwe_password" :"hunter2",
 

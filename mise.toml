@@ -1,0 +1,17 @@
+[tools]
+opentofu = "latest"
+
+[tasks.tofu-validate]
+run = ["tofu validate"]
+
+[tasks.ruff]
+run = ["uv run ruff check"]
+
+[tasks.ty]
+run = ["uv run ty check"]
+
+[tasks.pytest]
+run = ["uv run pytest"]
+
+[tasks.check]
+depends = ["tofu-validate", "ruff", "ty", "pytest"]
