@@ -12,5 +12,5 @@ test:
     uv run pytest
 
 lint:
-    uv run ruff check goodwe2pvoutput tests
-    uv run mypy --strict goodwe2pvoutput tests
+    uv run ruff check
+    uv run ty check
