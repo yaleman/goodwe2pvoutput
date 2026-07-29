@@ -1,14 +1,15 @@
 """
 
-lambda function for doing the goodwe2pvoutput thing
+AWS lambda function for sending goodwe data to pvoutput
 
-"""
+"""  # noqa: N999
 
 import logging
 import os
 from typing import Any
 
 from pvoutput import PVOutput
+from pvoutput.exceptions import InvalidRegexpError
 from pvoutput.parameters import ADDSTATUS_PARAMETERS
 from pygoodwe import SingleInverter
 
@@ -21,8 +22,8 @@ def lambda_handler(
     """does the needful"""
 
     logger = logging.getLogger()
-
-    if os.getenv("LOG_LEVEL") in [
+    os_log_level = os.getenv("LOG_LEVEL", "WARNING").upper().strip()
+    if os_log_level in [
         "CRITICAL",
         "ERROR",
         "WARNING",
@@ -30,9 +31,10 @@ def lambda_handler(
         "DEBUG",
         "NOTSET",
     ]:
-        print(f"Setting log level to {os.getenv('LOG_LEVEL')}")
-        logger.setLevel(getattr(logging, os.environ["LOG_LEVEL"]))
+        print(f"Setting log level to {os_log_level}")
+        logger.setLevel(getattr(logging, os_log_level))
     else:
+        print(f"Invalid log level {os_log_level}, defaulting to WARNING")
         logger.setLevel(logging.WARNING)
 
     ##################
@@ -43,21 +45,19 @@ def lambda_handler(
     if soc_field is None:
         logger.error("Missing SOC_FIELD environment variable, bailing")
         return False
-    soc_enable = bool(os.getenv("SOC_ENABLE"))
-    pvoutput_donation_mode = bool(os.getenv("PVOUTPUT_DONATION_MODE"))
-    if pvoutput_donation_mode is None:
-        pvoutput_donation_mode = False
+    soc_enable = bool(os.getenv("SOC_ENABLE", "False"))
+    pvoutput_donation_mode = bool(os.getenv("PVOUTPUT_DONATION_MODE", "False"))
+
     pvoutput_apikey = os.getenv("PVOUTPUT_APIKEY")
     if pvoutput_apikey is None:
         logger.error("Missing PVOUTPUT_APIKEY environment variable, bailing")
         return False
 
     pvoutput_systemid_orig = os.getenv("PVOUTPUT_SYSTEMID")
-    if pvoutput_systemid_orig is not None:
-        pvoutput_systemid = int(pvoutput_systemid_orig)
-    else:
+    if pvoutput_systemid_orig is None:
         logger.error("Missing PVOUTPUT_SYSTEMID environment variable, bailing")
         return False
+    pvoutput_systemid = int(pvoutput_systemid_orig)
 
     goodwe_username = os.getenv("GOODWE_USERNAME")
     if goodwe_username is None:
@@ -118,7 +118,11 @@ def lambda_handler(
     # this'll throw errors if it's not right
     try:
         pvo.validate_data(pvdata, ADDSTATUS_PARAMETERS)
+<<<<<<< HEAD
     except Exception as error_message:  # pylint: disable=broad-except  # noqa: BLE001
+=======
+    except (TypeError, ValueError, InvalidRegexpError) as error_message:  # pylint: disable=broad-except
+>>>>>>> origin/main
         print(f"PVOutput.validate_data({pvdata}) failed with an error: {error_message}")
         return False
 

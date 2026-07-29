@@ -1,5 +1,8 @@
 
 [project]
+name = "goodwe2pvoutput"
+version = "0.2.1"
+description = "Goodwe to PVOutput"
 authors = [{ name = "yaleman", email = "james@terminaloutcomes.com" }]
 requires-python = "<4.0,>=3.12"
 dependencies = [
@@ -9,28 +12,40 @@ dependencies = [
     "pydantic>=2.13.4",
     "pydantic-settings>=2.14.2",
 ]
-name = "goodwe2pvoutput"
-version = "0.2.0"
-description = "Goodwe to PVOutput"
 
 [dependency-groups]
 dev = [
     "pytest>=9.1.1",
     "mypy>=2.3.0",
+<<<<<<< HEAD
     "pyright>=1.1.411",
     "ruff>=0.16.0",
     "ty>=0.0.60",
+=======
+    "ruff>=0.15.22",
+    "ty>=0.0.63",
+    "coveralls>=4.1.0",
+>>>>>>> origin/main
 ]
 
 [project.scripts]
 goodwe2pvoutput = "goodwe2pvoutput.__main__:main"
 
 [build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
+<<<<<<< HEAD
 [tool.pyright]
 exclude = ["layer_requirements/**", ".venv/**", ".terraform/**"]
 
 [tool.ruff.lint.per-file-ignores]
 "goodwe2pvoutput/lambda.py" = ["N999"]
+=======
+[tool.hatch.build.targets.wheel]
+packages = ["goodwe2pvoutput"]
+
+[tool.pytest]
+norecursedirs = ["layer_requirements/", ".venv/", ".terraform/"]
+testpaths = ["tests"]
+>>>>>>> origin/main

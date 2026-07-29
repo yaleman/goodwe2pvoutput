@@ -1,14 +1,22 @@
 #!/usr/bin/env python
 
+<<<<<<< HEAD
 import logging
 import sys
 import time
 from pathlib import Path
 from typing import Any, Self
+=======
+import sys
+import time
+from typing import Any
+>>>>>>> origin/main
 
 import schedule
 from pvoutput import PVOutput
+from pvoutput.exceptions import InvalidRegexpError
 from pvoutput.parameters import ADDSTATUS_PARAMETERS
+<<<<<<< HEAD
 from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings
 from pygoodwe import SingleInverter
@@ -80,6 +88,11 @@ class Config(BaseSettings):
 config = Config.load()
 
 logger.setLevel(config.logging_level.upper())
+=======
+from pygoodwe import SingleInverter
+
+from goodwe2pvoutput import LOGGER, Config
+>>>>>>> origin/main
 
 
 def add_soc(
@@ -96,49 +109,67 @@ def add_soc(
     # this'll throw errors if it's not right
     try:
         pvo.validate_data(pvdata, ADDSTATUS_PARAMETERS)
+<<<<<<< HEAD
     except Exception as e:  # noqa: BLE001
         logger.error("PVOutput.validate_data(%s) failed with an error: %s", pvdata, e)
+=======
+    except (TypeError, ValueError, InvalidRegexpError) as e:
+        LOGGER.error("PVOutput.validate_data(%s) failed with an error: %s", pvdata, e)
+>>>>>>> origin/main
         sys.exit(1)
     return pvdata
 
 
 def do_the_thing(config: Config) -> None:
-    logger.debug("Starting do_the_thing()")
+    LOGGER.debug("Starting do_the_thing()")
 
-    logger.debug("Instantiating PVOutput API Object")
+    LOGGER.debug("Instantiating PVOutput API Object")
     pvo = PVOutput(
-        apikey=config.pvoutput_apikey,
+        apikey=config.pvoutput_apikey.get_secret_value(),
         systemid=config.pvoutput_systemid,
         donation_made=config.pvoutput_donation_made,
     )
 
-    logger.debug("Connecting to Goodwe API")
+    LOGGER.debug("Connecting to Goodwe API")
     gw = SingleInverter(
         system_id=config.goodwe_systemid,
-        account=config.goodwe_account,
-        password=config.goodwe_password,
+        account=config.goodwe_username,
+        password=config.goodwe_password.get_secret_value(),
     )
     # update the data
     gw.get_current_readings(maxretries=0)
 
     pvdata = gw.getDataPvoutput()
     # add the state of charge data
+    if config.dry_run:
+        LOGGER.info("Dry run, not sending data to PVOutput: %s", pvdata)
+        return
     pvdata = add_soc(config, gw, pvo, pvdata)
-    logger.debug("Grabbing the PVOutput-ready data: %s", pvdata)
+    LOGGER.debug("Grabbing the PVOutput-ready data: %s", pvdata)
 
     response = pvo.addstatus(data=pvdata)
-    logger.debug("Called the PVOutput addstatus endpoint: %s", response.text)
+    LOGGER.debug("Called the PVOutput addstatus endpoint: %s", response.text)
 
 
 def main() -> None:
     # simple scheduler, run do_the_thing() every x minutes
-    logger.debug("Scheduling update every %s minutes", config.schedule_minutes)
+
+    config = Config()
+    LOGGER.setLevel(config.logging_level.upper())
+
+    if config.show_config:
+        LOGGER.info("Config dump:")
+        for key, value in config.model_dump().items():
+            LOGGER.info("%s: %s", key, value)
+        return
+
+    LOGGER.debug("Scheduling update every %s minutes", config.schedule_minutes)
     schedule.every(config.schedule_minutes).minutes.do(do_the_thing)
 
-    logger.debug("Doing initial run...")
+    LOGGER.debug("Doing initial run...")
     do_the_thing(config)
 
-    logger.debug("Running scheduler...")
+    LOGGER.debug("Running scheduler...")
     while True:
         time.sleep(5)
         schedule.run_pending()

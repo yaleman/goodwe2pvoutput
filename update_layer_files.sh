@@ -1,32 +1,40 @@
 #!/bin/bash
 #update_layer_files.sh
 
-if [ -d "layer_requirements" ]; then
-	echo "Removing existing layer_requirements directory..."
-	rm -rf layer_requirements
-fi
-
 TARGET_DIR="layer_requirements"
+if [ -d "${TARGET_DIR}" ]; then
+	echo "Removing existing layer_requirements directory..."
+	rm -rf "${TARGET_DIR}"
+fi
 
 mkdir -p "${TARGET_DIR}"
 
-PYTHON_VERSION="3.12"
+MYTEMP=$(mktemp -d)
 
-uv export --frozen --no-dev --no-editable -o "$TMPDIR/requirements.txt"
+
+if [ ! -f ".python-version" ]; then
+    echo "Error: .python-version file not found. Please create it with the desired Python version."
+    exit 1
+fi
+PYTHON_VERSION="$(cat .python-version)"
+
+uv export --frozen --no-dev --no-editable -o "$MYTEMP/requirements.txt"
 uv pip install \
    --no-installer-metadata \
-   --no-compile-bytecode \
+   --compile-bytecode \
    --python-platform x86_64-manylinux2014 \
    --python "${PYTHON_VERSION}" \
    --target "${TARGET_DIR}/python" \
-   -r "$TMPDIR/requirements.txt"
+   -r "$MYTEMP/requirements.txt"
 
 uv pip install \
    --no-installer-metadata \
-   --no-compile-bytecode \
+   --compile-bytecode \
    --python-platform aarch64-manylinux2014 \
    --python "${PYTHON_VERSION}" \
    --target "${TARGET_DIR}/python" \
-   -r "$TMPDIR/requirements.txt"
+   -r "$MYTEMP/requirements.txt"
 
 rm -rf "${TARGET_DIR:?}/bin"
+
+rm -rf "$MYTEMP"
