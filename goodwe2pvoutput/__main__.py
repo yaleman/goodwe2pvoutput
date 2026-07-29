@@ -1,18 +1,17 @@
 #!/usr/bin/env python
 
 import logging
-import time
-from typing import Any, Dict, Optional, Self
-from pydantic import Field, field_validator, model_validator
-from pydantic_settings import BaseSettings
-import schedule
 import sys
+import time
 from pathlib import Path
+from typing import Any, Self
 
-from pygoodwe import SingleInverter
+import schedule
 from pvoutput import PVOutput
 from pvoutput.parameters import ADDSTATUS_PARAMETERS
-
+from pydantic import Field, field_validator, model_validator
+from pydantic_settings import BaseSettings
+from pygoodwe import SingleInverter
 
 FORMAT = "%(asctime)-15s %(message)s"
 logging.basicConfig(format=FORMAT)
@@ -23,7 +22,7 @@ logger = logging.getLogger()
 CONFIG_FILES = [
     "./goodwe2pvoutput.json",
     "/etc/goodwe2pvoutput.json",
-    f"{str(Path.home())}/.goodwe2pvoutput.json",
+    f"{Path.home()!s}/.goodwe2pvoutput.json",
 ]
 
 
@@ -44,7 +43,7 @@ class Config(BaseSettings):
     pvoutput_soc_enable: bool = Field(
         False, description="Enable State of Charge logging"
     )
-    pvoutput_soc_field: Optional[str] = Field(
+    pvoutput_soc_field: str | None = Field(
         default=None, description="State of Charge field name"
     )
 
@@ -61,7 +60,7 @@ class Config(BaseSettings):
             raise ValueError("Cannot log State of Charge if you have not donated")
         if (
             self.pvoutput_soc_field is not None
-            and self.pvoutput_soc_field not in ADDSTATUS_PARAMETERS.keys()
+            and self.pvoutput_soc_field not in ADDSTATUS_PARAMETERS
         ):
             raise ValueError(
                 f'Cannot log State of Charge to field "{self.pvoutput_soc_field}" - field does not exist'
@@ -84,8 +83,8 @@ logger.setLevel(config.logging_level.upper())
 
 
 def add_soc(
-    config: Config, gw: SingleInverter, pvo: PVOutput, pvdata: Dict[str, Any]
-) -> Dict[str, Any]:
+    config: Config, gw: SingleInverter, pvo: PVOutput, pvdata: dict[str, Any]
+) -> dict[str, Any]:
     """adds the state of charge field if you've donated and set it to"""
     if not config.pvoutput_soc_enable:
         return pvdata
@@ -97,7 +96,7 @@ def add_soc(
     # this'll throw errors if it's not right
     try:
         pvo.validate_data(pvdata, ADDSTATUS_PARAMETERS)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         logger.error("PVOutput.validate_data(%s) failed with an error: %s", pvdata, e)
         sys.exit(1)
     return pvdata

@@ -6,17 +6,17 @@ lambda function for doing the goodwe2pvoutput thing
 
 import logging
 import os
-from typing import Any, Dict
+from typing import Any
 
-from pygoodwe import SingleInverter
 from pvoutput import PVOutput
 from pvoutput.parameters import ADDSTATUS_PARAMETERS
+from pygoodwe import SingleInverter
 
 
 # pylint: disable=unused-argument,too-many-return-statements,too-many-branches,too-many-statements
 def lambda_handler(
-    event: Dict[str, Any],
-    context: Dict[str, Any],
+    event: dict[str, Any],
+    context: dict[str, Any],
 ) -> bool:
     """does the needful"""
 
@@ -118,7 +118,7 @@ def lambda_handler(
     # this'll throw errors if it's not right
     try:
         pvo.validate_data(pvdata, ADDSTATUS_PARAMETERS)
-    except Exception as error_message:  # pylint: disable=broad-except
+    except Exception as error_message:  # pylint: disable=broad-except  # noqa: BLE001
         print(f"PVOutput.validate_data({pvdata}) failed with an error: {error_message}")
         return False
 
