@@ -6,17 +6,17 @@ lambda function for doing the goodwe2pvoutput thing
 
 import logging
 import os
-from typing import Any, Dict
+from typing import Any
 
-from pygoodwe import SingleInverter
 from pvoutput import PVOutput
 from pvoutput.parameters import ADDSTATUS_PARAMETERS
+from pygoodwe import SingleInverter
 
 
 # pylint: disable=unused-argument,too-many-return-statements,too-many-branches,too-many-statements
 def lambda_handler(
-    event: Dict[str, Any],
-    context: Dict[str, Any],
+    event: dict[str, Any],
+    context: dict[str, Any],
 ) -> bool:
     """does the needful"""
 
