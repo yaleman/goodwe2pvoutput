@@ -60,7 +60,7 @@ class Config(BaseSettings):
             raise ValueError("Cannot log State of Charge if you have not donated")
         if (
             self.pvoutput_soc_field is not None
-            and self.pvoutput_soc_field not in ADDSTATUS_PARAMETERS.keys()
+            and self.pvoutput_soc_field not in ADDSTATUS_PARAMETERS
         ):
             raise ValueError(
                 f'Cannot log State of Charge to field "{self.pvoutput_soc_field}" - field does not exist'
@@ -96,7 +96,7 @@ def add_soc(
     # this'll throw errors if it's not right
     try:
         pvo.validate_data(pvdata, ADDSTATUS_PARAMETERS)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         logger.error("PVOutput.validate_data(%s) failed with an error: %s", pvdata, e)
         sys.exit(1)
     return pvdata

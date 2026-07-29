@@ -31,3 +31,6 @@ build-backend = "pdm.backend"
 
 [tool.pyright]
 exclude = ["layer_requirements/**", ".venv/**", ".terraform/**"]
+
+[tool.ruff.lint.per-file-ignores]
+"goodwe2pvoutput/lambda.py" = ["N999"]

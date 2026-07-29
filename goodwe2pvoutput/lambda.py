@@ -118,7 +118,7 @@ def lambda_handler(
     # this'll throw errors if it's not right
     try:
         pvo.validate_data(pvdata, ADDSTATUS_PARAMETERS)
-    except Exception as error_message:  # pylint: disable=broad-except
+    except Exception as error_message:  # pylint: disable=broad-except  # noqa: BLE001
         print(f"PVOutput.validate_data({pvdata}) failed with an error: {error_message}")
         return False
 
