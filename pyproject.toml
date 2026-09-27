@@ -7,7 +7,7 @@ authors = [{ name = "yaleman", email = "james@terminaloutcomes.com" }]
 requires-python = "<4.0,>=3.12"
 dependencies = [
     "schedule>=1.2.2",
-    "pygoodwe>=0.1.11",
+    "pygoodwe>=0.2.0",
     "pvoutput>=0.1.0",
     "pydantic>=2.13.5",
     "pydantic-settings>=2.15.0",
@@ -16,7 +16,6 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=9.1.1",
-    "mypy>=2.3.1",
     "ruff>=0.16.8",
     "ty>=0.0.83",
     "coveralls>=4.1.0",
