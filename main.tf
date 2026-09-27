@@ -1,8 +1,14 @@
+
+locals {
+  lambda_layer_requests_arn = [for entry in jsondecode(data.http.requests_layers.response_body) : entry.arn if entry["deployStatus"] != "deprecated"][0]
+  python_version = "3.13"
+}
+
 module "dependabot_lambda" {
   source         = "git::https://github.com/yaleman/terraform_lambda?ref=1.0.9"
   function_name  = var.project_name
   lambda_handler = "${var.project_name}/lambda.lambda_handler"
-  lambda_runtime = "python${file("${path.module}/.python-version")}"
+  lambda_runtime = "python${local.python_version}"
 
   lambda_run_on_schedule = true
 
@@ -39,9 +45,6 @@ data "http" "requests_layers" {
 }
 
 
-locals {
-  lambda_layer_requests_arn = [for entry in jsondecode(data.http.requests_layers.response_body) : entry.arn if entry["deployStatus"] != "deprecated"][0]
-}
 ########## requirements LAYER START
 data "archive_file" "layer_requirements" {
   type        = "zip"
@@ -53,7 +56,7 @@ data "archive_file" "layer_requirements" {
 resource "aws_lambda_layer_version" "layer_requirements" {
   filename            = data.archive_file.layer_requirements.output_path
   layer_name          = "goodwe2pvoutput-requirements"
-  compatible_runtimes = ["python3.12"]
+  compatible_runtimes = ["python${local.python_version}"]
   source_code_hash    = data.archive_file.layer_requirements.output_base64sha256
   provisioner "local-exec" {
     command = "./update_layer_files.sh"

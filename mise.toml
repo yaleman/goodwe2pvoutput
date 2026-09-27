@@ -1,3 +1,6 @@
+[env]
+_.file = { path = ".envrc", redact = true, required = true }
+
 [tools]
 opentofu = "latest"
 
