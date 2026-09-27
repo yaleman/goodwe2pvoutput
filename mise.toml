@@ -3,6 +3,7 @@ _.file = { path = ".envrc", redact = true, required = true }
 
 [tools]
 opentofu = "latest"
+shellcheck = "latest"
 uv = "latest"
 
 [tasks.tofu-validate]
