@@ -1,7 +1,7 @@
 
 locals {
-  lambda_layer_requests_arn = [for entry in jsondecode(data.http.requests_layers.response_body) : entry.arn if entry["deployStatus"] != "deprecated"][0]
-  python_version = "3.13"
+  # lambda_layer_requests_arn = [for entry in jsondecode(data.http.requests_layers.response_body) : entry.arn if entry["deployStatus"] != "deprecated"][0]
+  python_version = trimspace(file(".python-version"))
 }
 
 module "dependabot_lambda" {
@@ -18,7 +18,7 @@ module "dependabot_lambda" {
   lambda_memory              = 128
 
   layer_arns = [
-    local.lambda_layer_requests_arn,
+    # local.lambda_layer_requests_arn,
     aws_lambda_layer_version.layer_requirements.arn,
   ]
 
@@ -36,33 +36,34 @@ module "dependabot_lambda" {
   }
 }
 
-# grab the latest layers for things
-data "http" "requests_layers" {
-  url = "https://api.klayers.cloud/api/v1/layers/${var.aws_region}/requests"
-  request_headers = {
-    Accept = "application/json"
+
+########## requirements LAYER START
+resource "terraform_data" "build_layer_requirements" {
+  triggers_replace = [
+    filesha256(".python-version"),
+    filesha256("pyproject.toml"),
+    filesha256("uv.lock"),
+    filesha256("update_layer_files.sh"),
+    filesha256("scripts/merge_layer_architectures.py"),
+  ]
+
+  provisioner "local-exec" {
+    command = "./update_layer_files.sh"
   }
 }
 
-
-########## requirements LAYER START
 data "archive_file" "layer_requirements" {
   type        = "zip"
   source_dir  = "./layer_requirements/"
   output_path = "layer_requirements.zip"
-
+  depends_on  = [terraform_data.build_layer_requirements]
 }
 
 resource "aws_lambda_layer_version" "layer_requirements" {
-  filename            = data.archive_file.layer_requirements.output_path
-  layer_name          = "goodwe2pvoutput-requirements"
-  compatible_runtimes = ["python${local.python_version}"]
-  source_code_hash    = data.archive_file.layer_requirements.output_base64sha256
-  provisioner "local-exec" {
-    command = "./update_layer_files.sh"
-  }
-  depends_on = [
-    data.archive_file.layer_requirements
-  ]
+  filename                 = data.archive_file.layer_requirements.output_path
+  layer_name               = "goodwe2pvoutput-requirements"
+  compatible_runtimes      = ["python${local.python_version}"]
+  compatible_architectures = ["x86_64", "arm64"]
+  source_code_hash         = data.archive_file.layer_requirements.output_base64sha256
 }
 ########## GHAPI LAYER END
