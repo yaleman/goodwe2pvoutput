@@ -18,12 +18,15 @@ run = ["uv run ty check"]
 [tasks.pytest]
 run = ["uv run pytest"]
 
-[tasks.check]
-depends = ["tofu-validate", "ruff", "ty", "pytest"]
-
 [tasks.coverage]
 run = [
     "uv run coverage run -m pytest",
     "uv run coverage xml",
     "uv run coveralls",
 ]
+
+[tasks.shellcheck]
+run = ["find . -name '*.sh' -exec uv run shellcheck '{}' +"]
+
+[tasks.check]
+depends = ["shellcheck", "tofu-validate", "ruff", "ty", "pytest"]
