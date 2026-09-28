@@ -21,7 +21,7 @@ for ARCH in x86_64 aarch64; do
        --python "${PYTHON_VERSION}" \
        --target "$MYTEMP/$ARCH/python" \
        -r "$MYTEMP/requirements.txt"
-    rm -rf "$MYTEMP/$ARCH/bin"
+    rm -rf "${MYTEMP:?}/${ARCH:?}/bin"
 done
 
 python3 scripts/merge_layer_architectures.py "$MYTEMP/x86_64/python" "$MYTEMP/aarch64/python"
