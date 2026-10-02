@@ -17,7 +17,7 @@ dependencies = [
 dev = [
     "pytest>=9.1.1",
     "ruff>=0.16.9",
-    "ty>=0.0.83",
+    "ty>=0.0.84",
     "coveralls>=4.1.0",
     "coverage>=7.16.2",
 ]
