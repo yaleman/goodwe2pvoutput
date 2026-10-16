@@ -9,7 +9,7 @@ dependencies = [
     "schedule>=1.2.2",
     "pygoodwe>=0.2.0",
     "pvoutput>=0.1.0",
-    "pydantic>=2.13.5",
+    "pydantic>=2.14.1",
     "pydantic-settings>=2.15.0",
 ]
 
