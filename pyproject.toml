@@ -19,7 +19,7 @@ dev = [
     "ruff>=0.17.1",
     "ty>=0.0.92",
     "coveralls>=4.1.0",
-    "coverage>=7.16.2",
+    "coverage>=7.17.0",
 ]
 
 [project.scripts]
