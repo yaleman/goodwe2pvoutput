@@ -10,7 +10,7 @@ dependencies = [
     "pygoodwe>=0.2.0",
     "pvoutput>=0.1.0",
     "pydantic>=2.14.2",
-    "pydantic-settings>=2.16.1",
+    "pydantic-settings>=2.16.2",
 ]
 
 [dependency-groups]
